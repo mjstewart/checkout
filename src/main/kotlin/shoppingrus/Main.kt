@@ -22,6 +22,4 @@ fun main() {
     catalogue.get(SkuConstants.VGA.sku)?.also { checkout.scan(it.sku) }
 
     println(checkout.total())
-
-
 }
