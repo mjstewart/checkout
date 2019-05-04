@@ -10,10 +10,9 @@ mvn clean test
 
 maven project structure with tests guiding usage examples
  
-- See tests for example usage on how to interact with the checkout - [https://github.com/mjstewart/checkout/blob/master/src/test/kotlin/shoppingrus/checkout/CheckoutTest.kt](CheckoutTest.kt)
-- Alternatively, there is a main entry point - [https://github.com/mjstewart/checkout/blob/master/src/main/kotlin/shoppingrus/Main.kt](Main.kt)
+- See tests for example usage - [Tests](https://github.com/mjstewart/checkout/tree/master/src/test/kotlin/shoppingrus)
+- Alternatively, there is a main entry point - [Main.kt](https://github.com/mjstewart/checkout/blob/master/src/main/kotlin/shoppingrus/Main.kt)
  
-
 # Requirements
 
 kotlin 1.3+
