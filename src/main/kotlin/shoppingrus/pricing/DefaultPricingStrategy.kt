@@ -6,8 +6,8 @@ import shoppingrus.domain.PricingContext
 import shoppingrus.domain.Sku
 
 /**
- * Given a list of purchased sku id's, the DefaultPricingStrategy uses an inventory catalogue to find the
- * associated product to supply to the pricing rule in order to calculate the total order cost.
+ * The DefaultPricingStrategy uses an inventory catalogue to retrieve product details to be consumed by
+ * pricing rules to calculate the total order cost.
  */
 class DefaultPricingStrategy(
         private val catalogue: Catalogue,
@@ -20,13 +20,16 @@ class DefaultPricingStrategy(
             rules.getOrDefault(lineItem.product.sku, RuleDefinitions.withoutDiscount())(lineItem, context)
 
     override fun calculate(skus: List<Sku>): Double {
-        // Sku as the key enables rules to easily lookup dependent ordered products in O(1)
+        /*
+         * Sku as the key enables rules to lookup products in the current checkout in O(1).
+         * Mapping the value to a LineItem simplifies rules from needing to re-lookup the product from the catalogue.
+         */
         val lineItems: Map<Sku, LineItem> = skus.mapNotNull { catalogue.get(it) }
                 .groupingBy { it }.eachCount()
                 .toList()
                 .associateBy({ it.first.sku }, { LineItem(it.first, it.second) })
 
-        // Rules may need to query both the ordered items and the global catalogue
+        // Rules may need to query both the ordered items and the inventory catalogue
         val context = PricingContext(lineItems, catalogue)
 
         return lineItems.values.fold(0.0, { acc, lineItem ->

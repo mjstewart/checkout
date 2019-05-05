@@ -94,7 +94,7 @@ class RuleTests {
                     purchases = listOf(ATV.sku to 3)
             )
             val tv = context.lineItems.getValue(ATV.sku)
-            val rule = rules.getValue(tv.product.sku)
+            val rule = rules.getValue(ATV.sku)
             assertThat(rule(tv, context)).isEqualTo(tv.product.price * 2)
         }
 
@@ -105,7 +105,7 @@ class RuleTests {
                     purchases = listOf(ATV.sku to 2)
             )
             val tv = context.lineItems.getValue(ATV.sku)
-            val rule = rules.getValue(tv.product.sku)
+            val rule = rules.getValue(ATV.sku)
             assertThat(rule(tv, context)).isEqualTo(tv.product.price * tv.qty)
         }
     }
@@ -126,7 +126,7 @@ class RuleTests {
                     purchases = listOf(VGA.sku to 3)
             )
             val vga = context.lineItems.getValue(VGA.sku)
-            val rule = rules.getValue(vga.product.sku)
+            val rule = rules.getValue(VGA.sku)
             assertThat(rule(vga, context)).isEqualTo(vga.product.price * vga.qty)
         }
 
@@ -144,7 +144,7 @@ class RuleTests {
             val vga = context.lineItems.getValue(VGA.sku)
             val mbp = context.lineItems.getValue(MBP.sku)
 
-            val rule = rules.getValue(vga.product.sku)
+            val rule = rules.getValue(VGA.sku)
             assertThat(vga.qty == qty && mbp.qty == qty).isTrue()
             assertThat(rule(vga, context)).isEqualTo(0.0)
         }
@@ -161,7 +161,7 @@ class RuleTests {
 
             val vga = context.lineItems.getValue(VGA.sku)
             val mbp = context.lineItems.getValue(MBP.sku)
-            val rule = rules.getValue(vga.product.sku)
+            val rule = rules.getValue(VGA.sku)
 
             assertThat(vga.qty < mbp.qty).isTrue()
             assertThat(rule(vga, context)).isEqualTo(0.0)
@@ -179,7 +179,7 @@ class RuleTests {
 
             val vga = context.lineItems.getValue(VGA.sku)
             val mbp = context.lineItems.getValue(MBP.sku)
-            val rule = rules.getValue(vga.product.sku)
+            val rule = rules.getValue(VGA.sku)
 
             val additionalAdapters = vga.qty - mbp.qty
             val expectedAdditionalAdapterCost = additionalAdapters * vga.product.price

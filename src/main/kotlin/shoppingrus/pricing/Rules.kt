@@ -14,10 +14,17 @@ data class Rule(val description: String, val mapper: PriceMapper) {
 object RuleDefinitions {
 
     fun withoutDiscount() = Rule(
-            description = "No discount is applied - product price multiplied by ordered qty",
+            description = "No discount is applied - product price multiplied by qty",
             mapper = { (product, qty), _ -> product.price * qty }
     )
 
+    /**
+     * Associates a Sku to a rule which handles the discounting policy.
+     *
+     * For example, if the 'ipd' rule is triggered, the mapper function receives the 'ipd' LineItem and
+     * PricingContext. The PricingContext contains all other LineItems in current checkout as well as the
+     * inventory catalogue.
+     */
     fun standard(): RuleMappings {
         val rules = mutableMapOf<Sku, Rule>()
 

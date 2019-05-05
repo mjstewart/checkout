@@ -17,7 +17,7 @@ class CheckoutTest {
     private val rules: Map<Sku, Rule> = RuleDefinitions.standard()
 
     @Test
-    fun `given 0 scanned, then total should be 0`() {
+    fun `given 0 skus scanned, then total should be 0`() {
         val products = listOf(
                 Product(IPD.sku, "Super iPad", 549.99),
                 Product(MBP.sku, "MacBook Pro", 1399.99),
@@ -65,7 +65,7 @@ class CheckoutTest {
     }
 
     @Test
-    fun `given every item is involved in a discount, scan order should not matter`() {
+    fun `given every item triggers a discount, scan order should not matter`() {
         val products = listOf(
                 Product(IPD.sku, "Super iPad", 549.99),
                 Product(MBP.sku, "MacBook Pro", 1399.99),
@@ -90,18 +90,18 @@ class CheckoutTest {
                 .total()
 
         // 3 tvs for the price of 2
-        val expectedTvPrice = products.getValue(ATV.sku).price * 2
+        val expectedTVPrice = products.getValue(ATV.sku).price * 2
 
         // more than 4 iPads get a bulk discount of dropping the unit price
         val expectedIPadPrice = 499.99 * 5
 
-        // scanned 4 mac books which get no discount
+        // scanned 4 mac books which receive no discount
         val expectedMBPPrice = products.getValue(MBP.sku).price * 4
 
         // 4 VGA's are in the order with 4 macs resulting in all adapters being bundled in for free
         val expectedVGAPrice = 0.0
 
-        val expectedTotal = expectedTvPrice + expectedIPadPrice + expectedMBPPrice + expectedVGAPrice
+        val expectedTotal = expectedTVPrice + expectedIPadPrice + expectedMBPPrice + expectedVGAPrice
 
         assertThat(totalOrderingA).isEqualTo(expectedTotal)
         assertThat(totalOrderingB).isEqualTo(expectedTotal)
@@ -243,7 +243,7 @@ class CheckoutTest {
                     .scan(VGA.sku)
                     .total()
 
-            // Purchase 1 macbook pro with 1 VGA which results in VGA being bundled in for free
+            // Purchase 1 macbook pro with 1 VGA resulting in VGA being bundled for free
             val expectedVGAPrice = 0.0
             val expectedMacPrice = products.getValue(MBP.sku).price
             val expectedIPadPrice = products.getValue(IPD.sku).price
@@ -275,6 +275,5 @@ class CheckoutTest {
 
             assertThat(total).isEqualTo(expectedTotal)
         }
-
     }
 }
