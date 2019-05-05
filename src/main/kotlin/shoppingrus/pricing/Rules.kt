@@ -3,6 +3,7 @@ package shoppingrus.pricing
 import shoppingrus.domain.LineItem
 import shoppingrus.domain.PricingContext
 import shoppingrus.domain.Sku
+import shoppingrus.domain.SkuConstants.*
 
 typealias PriceMapper = (LineItem, PricingContext) -> Double
 typealias RuleMappings = Map<Sku, Rule>
@@ -28,7 +29,7 @@ object RuleDefinitions {
     fun standard(): RuleMappings {
         val rules = mutableMapOf<Sku, Rule>()
 
-        rules[Sku("ipd")] = Rule(
+        rules[IPD.sku] = Rule(
                 description = "Buy more than 4 iPads and drop the unit price to $499.99 each",
                 mapper = { (product, qty), _ ->
                     if (qty > 4) {
@@ -38,7 +39,7 @@ object RuleDefinitions {
                     }
                 })
 
-        rules[Sku("atv")] = Rule(
+        rules[ATV.sku] = Rule(
                 description = "Buy 3 Apple TV's and only pay for 2",
                 mapper = { (product, qty), _ ->
                     if (qty == 3) {
@@ -48,10 +49,10 @@ object RuleDefinitions {
                     }
                 })
 
-        rules[Sku("vga")] = Rule(
+        rules[VGA.sku] = Rule(
                 description = "Each MacBook Pro sold receives a free VGA adapter",
                 mapper = { vgaLineItem, context ->
-                    context.lineItems[Sku("mbp")]?.let { mbpLineItem ->
+                    context.lineItems[MBP.sku]?.let { mbpLineItem ->
                         if (vgaLineItem.qty > mbpLineItem.qty) {
                             // pay for the additional adapters
                             vgaLineItem.product.price * (vgaLineItem.qty - mbpLineItem.qty)
